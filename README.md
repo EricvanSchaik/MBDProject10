@@ -3,7 +3,7 @@
 ## Initializing Git repository
 * SSH into the ewi.utwente.nl cluster
 * Create a new directory in your own home directory
-* Run `git init`
+* Run `git init` in this new directory
 * Run `ssh-keygen -t ed25519 -C "github"`
 * Go to the ssh directory where the public key is saved
 * Copy the contents of the .pub file
