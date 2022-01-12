@@ -1,6 +1,6 @@
 # MBDProject10
 
-## Initialzing Git repository
+## Initializing Git repository
 * SSH into the ewi.utwente.nl cluster
 * Create a new directory in your own home directory
 * Run `git init`
