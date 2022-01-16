@@ -8,9 +8,7 @@
 * Go to your GitHub settings (of your profile, not this project)
 * Go to SSH and GPG keys
 * Add your copied key
-* On the cluster, create a new directory in your own home directory
-* Run `git init` in this new directory
-* Run `git remote add origin git@github.com:EricvanSchaik/MBDProject10.git`
+* On the cluster, run `git clone git@github.com:EricvanSchaik/MBDProject10.git`
 
 ## Install Jupyter on the MBD server
 
