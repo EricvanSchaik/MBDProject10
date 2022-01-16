@@ -17,9 +17,8 @@
 python3 -m pip install jupyter
 touch ~/.bashrc
 echo 'export PYSPARK_PYTHON=/usr/bin/python3' >> ~/.bashrc
-echo 'export PYSPARK_DRIVER_PYTHON=python3' >> ~/.bashrc
 echo 'export PATH="~/.local/bin:$PATH"' >> ~/.bashrc
-echo 'export PYSPARK_DRIVER_PYTHON="jupyter"' >> ~/.bashrc
+echo 'export PYSPARK_DRIVER_PYTHON="/home/[your student number]/.local/jupyter"' >> ~/.bashrc
 echo 'export PYSPARK_DRIVER_PYTHON_OPTS="notebook --no-browser --port=8080"' >> ~/.bashrc
 source ~/.bashrc
 ```
