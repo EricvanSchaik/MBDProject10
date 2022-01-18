@@ -9,7 +9,8 @@
 * Go to SSH and GPG keys
 * Add your copied key
 * On the cluster, run `git clone git@github.com:EricvanSchaik/MBDProject10.git`
-* To make sure that git doesn't push all the output of the notebooks (this can become very large), run `git config filter.strip-notebook-output.clean 'jupyter nbconvert --ClearOutputPreprocessor.enabled=True --to=notebook --stdin --stdout --log-level=ERROR'`
+* To make sure that git doesn't push all the output of the notebooks (this can become very large), run 
+`git config filter.strip-notebook-output.clean 'jupyter nbconvert --ClearOutputPreprocessor.enabled=True --to=notebook --stdin --stdout --log-level=ERROR'`
 
 
 ## Install Jupyter on the MBD server
