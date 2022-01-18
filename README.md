@@ -39,3 +39,10 @@ ssh -N -L 8080:localhost:8080 [yourstudentnumber]@ctit[yourservernumber].ewi.utw
 ```
 
 Then open the link outputted by the `pyspark` command in your browser and it should work
+
+## Install required packages
+```console
+python3 -m pip install numpy
+python3 -m pip install pandas
+python3 -m pip install matplotlib
+```
