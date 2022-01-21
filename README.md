@@ -9,6 +9,11 @@
 * Go to SSH and GPG keys
 * Add your copied key
 * On the cluster, run `git clone git@github.com:EricvanSchaik/MBDProject10.git`
+* To make sure that git doesn't push all the output of the notebooks (this can become very large), run
+```console
+git config filter.strip-notebook-output.clean 'jupyter nbconvert --ClearOutputPreprocessor.enabled=True --to=notebook --stdin --stdout --log-level=ERROR'
+```
+
 
 ## Install Jupyter on the MBD server
 
@@ -36,3 +41,10 @@ ssh -N -L 8080:localhost:8080 [yourstudentnumber]@ctit[yourservernumber].ewi.utw
 ```
 
 Then open the link outputted by the `pyspark` command in your browser and it should work
+
+## Install required packages
+```console
+python3 -m pip install numpy
+python3 -m pip install pandas
+python3 -m pip install matplotlib
+```
