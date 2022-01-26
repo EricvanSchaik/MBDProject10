@@ -23,15 +23,7 @@ import os
 spark = SparkSession.builder.getOrCreate()
 
 df = spark.read.csv('/user/s1919377/flights/*', header='true')
-df = df.withColumn('firstseen',to_timestamp('firstseen', 'yyyy-MM-dd HH:mm:ss')) \
-       .withColumn('lastseen',to_timestamp('lastseen', 'yyyy-MM-dd HH:mm:ss')) \
-       .withColumn('month',to_timestamp('day', 'yyyy-MM')) \
-       .withColumn('longitude_1',col('longitude_1').cast('float')) \
-       .withColumn('longitude_2',col('longitude_2').cast('float')) \
-       .withColumn('latitude_1',col('latitude_1').cast('float')) \
-       .withColumn('latitude_2',col('latitude_2').cast('float')) \
-       .withColumn('altitude_1',col('altitude_1').cast('float')) \
-       .withColumn('altitude_2',col('altitude_2').cast('float'))
+df = df.withColumn('month',to_timestamp('day', 'yyyy-MM'))
 	   
 df_baseline = df.where(col('day').contains('2019-01'))
 df_progression = df.where(~col('day').contains('2019-01'))
