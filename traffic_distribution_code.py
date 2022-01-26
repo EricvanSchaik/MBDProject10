@@ -39,12 +39,9 @@ df1 = df_baseline.groupBy('destination').count().sort(col('count').desc()).dropn
 df2 = df_progression.groupBy('destination', 'month').count().sort(col('count').desc()).dropna()
 
 df1_limit = df1.limit(100)
-pd1 = df1_limit.toPandas()
-
-pd1.to_csv('distribution-panda-destination-' + df_baseline.first()['month'].date().strftime('%Y-%m') + '.csv')
 
 # Take the same airports from the dataframe with everything after 2019-01
-df2_limit = df2.filter(df2.destination.isin(pd1['destination'].values.tolist()))
+df2_limit = df2.join(df1_limit, 'destination', 'leftsemi')
 
 
 # Create an array of Pandas DataFrames, where each DataFrame contains the one month after 2019-01, 
@@ -60,17 +57,19 @@ for f in filenames:
         existing_months.append(datetime.datetime.strptime(f[len('distribution-panda-destination-'):-len('.csv')], '%Y-%m'))
 df2_rest = df2_rest.filter(~df2_rest.month.isin(existing_months))
 
-while (df2_rest.count() > 0):
+count = df2_rest.count()
+
+while (count > 0):
     month = df2_rest.first()['month']
-    df2_month = df2_rest.limit(100).where(col('month') == month)
-    pd2 = df2_month.toPandas()
+    df2_month = df2_rest.where(col('month') == month)
     # Put this new DataFrame in the same order as the first DataFrame
-    pd2['index'] = pd2.apply(lambda row: pd1[pd1['destination'] == row['destination']].index.tolist()[0], axis=1)
-    pd2 = pd2.set_index('index').sort_index()
-    pd2.to_csv('distribution-panda-destination-' + month.date().strftime('%Y-%m' + '.csv'))
+    df2_month = df1_limit.withColumnRenamed('count', 'firstCount').join(df2_month, 'destination')
+    df2_month = df2_month.sort(col('firstCount').desc()).drop(col('firstCount'))
+    df2_month.coalesce(1).write.option('header', 'true').mode('overwrite').csv('distribution-panda-destination-' + month.date().strftime('%Y-%m'))
     
     df2_rest = df2_rest.subtract(df2_month)
-    
+    df2_rest.persist()
+    count = df2_rest.count()
     
     
 # Animate the progression of the air traffic distribution
@@ -84,6 +83,7 @@ plt.ylabel('Amount of Flights')
 ax.set_xlim(0, 100)
 ax.set_ylim(0, 25000)
 
+pd1 = df1_limit.toPandas()
 ax.plot(pd1.index, pd1['count'])
 
 line, = ax.plot([], [])
@@ -103,10 +103,10 @@ def animate(i):
     
     plt.title(pds_files[i][len('distribution-panda-destination-'):-len('.csv')])
     
-    line.set_data(pd_progress.index, pd_progress["count"])
+    line.set_data(range(len(pd_progress)), pd_progress['count'])
     
     return line,
     
 anim = FuncAnimation(fig, animate, init_func = init, frames = len(pds_files), interval = 500)
-anim.save('distribution.mp4', writer = 'ffmpeg', fps = 30)    
+anim.save('distribution.mp4', writer = 'ffmpeg', fps = 2)
 
